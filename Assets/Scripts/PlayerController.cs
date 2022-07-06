@@ -17,7 +17,12 @@ public class PlayerController : MonoBehaviour
     public GameObject inGamePanel;
     public GameObject winPanel;
     public Image pickupFill;
+    public Image frontPickupFill;
     float pickupChunk;
+    public float lerpDuration = 2;
+    float startValue = 0;
+    float endValue;
+    float valueToLerp;
 
     void Start()
     {
@@ -34,6 +39,7 @@ public class PlayerController : MonoBehaviour
         //Work out the ammount of fill for our pickup fill
         pickupChunk = 1.0f / totalPickups;
         pickupFill.fillAmount = 0;
+        endValue = pickupChunk;
         //Display the pickups to the users
         CheckPickups();
     }
@@ -66,10 +72,24 @@ public class PlayerController : MonoBehaviour
             //increase the fill amount of our pickup fill image
             pickupFill.fillAmount = pickupFill.fillAmount + pickupChunk;
             //Display the pickups to the users
+            endValue = pickupFill.fillAmount + pickupChunk;
+            StartCoroutine(Lerp());
             CheckPickups();
 
             Destroy(other.gameObject);
         }
+    }
+    IEnumerator Lerp()
+    {
+        float timeElapsed = 0;
+        while (timeElapsed < lerpDuration)
+        {
+            valueToLerp = Mathf.Lerp(startValue, endValue, timeElapsed / lerpDuration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        valueToLerp = endValue;
+        frontPickupFill.fillAmount = valueToLerp;
     }
 
     void CheckPickups()
