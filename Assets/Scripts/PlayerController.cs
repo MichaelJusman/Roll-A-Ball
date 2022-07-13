@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public Image pickupFill;
     public Image frontPickupFill;
     float pickupChunk;
+    float timeElapsed;
     public float lerpDuration = 2;
     float startValue = 0;
     float endValue;
