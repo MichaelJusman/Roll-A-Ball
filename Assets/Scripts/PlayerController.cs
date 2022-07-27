@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     public float speed = 1.0f;
     public int pickupCount;
-    int totalPickups; 
+    int totalPickups;
     private bool wonGame = false;
     [Header("UI")]
     public TMP_Text scoreText;
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     float startValue = 0;
     float endValue;
     float valueToLerp;
+    public GameObject gameOverScreen;
 
     void Start()
     {
@@ -117,8 +118,9 @@ public class PlayerController : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
-    
+
     //Check if the pickupCount == 0
     //If pickupCount == 0, display win message, remove controls from player
     //Create a win condition that happens when pickupCount == 0
-}
+   
+
