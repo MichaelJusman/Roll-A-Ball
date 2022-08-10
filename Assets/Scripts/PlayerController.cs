@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     GameObject resetPoint;
     bool resetting = false;
     Color originalColour;
+    bool grounded = true;
 
     void Start()
     {
@@ -61,20 +62,24 @@ public class PlayerController : MonoBehaviour
         if (wonGame == true)
             return;
 
-        //Store the horizontal value in a float
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        //Store the vertical value in a float
-        float moveVertical = Input.GetAxis("Vertical");
-
-        //Create a new vector 3 based on the horizontal and vertical values
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-        //Add force to our rigidbody from our movement vector times our speed
-        rb.AddForce(movement * speed);
-
         //Reset Function
         if (resetting)
             return;
+
+        //Boost, Only able to move when grounded is true
+        if (grounded)
+        {
+            //Store the horizontal value in a float
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            //Store the vertical value in a float
+            float moveVertical = Input.GetAxis("Vertical");
+
+            //Create a new vector 3 based on the horizontal and vertical values
+            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
+            //Add force to our rigidbody from our movement vector times our speed
+            rb.AddForce(movement * speed);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -162,5 +167,18 @@ public class PlayerController : MonoBehaviour
         }
         GetComponent<Renderer>().material.color = originalColour;
         resetting = false;
+    }
+
+    //If exitting ground collider, disable ball movement
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.collider.CompareTag("Ground"))
+            grounded = true;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+            grounded = false;
     }
 }
