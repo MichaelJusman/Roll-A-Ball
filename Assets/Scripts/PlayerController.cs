@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     float endValue;
     float valueToLerp;
     public GameObject gameOverScreen;
+    GameObject resetPoint;
+    bool resetting = false;
+    Color originalColour;
 
     void Start()
     {
@@ -44,6 +47,12 @@ public class PlayerController : MonoBehaviour
         endValue = pickupChunk;
         //Display the pickups to the users
         CheckPickups();
+        //Reset point
+        resetPoint = GameObject.Find("Reset Point");
+        originalColour = GetComponent<Renderer>().material.color;
+
+        //Pause function
+        Time.timeScale = 1;
     }
 
     void FixedUpdate()
@@ -62,6 +71,10 @@ public class PlayerController : MonoBehaviour
 
         //Add force to our rigidbody from our movement vector times our speed
         rb.AddForce(movement * speed);
+
+        //Reset Function
+        if (resetting)
+            return;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -122,5 +135,32 @@ public class PlayerController : MonoBehaviour
     //Check if the pickupCount == 0
     //If pickupCount == 0, display win message, remove controls from player
     //Create a win condition that happens when pickupCount == 0
-   
 
+    //Reset Collision function
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Respawn"))
+        {
+            StartCoroutine(ResetPlayer());
+        }
+    }
+
+    public IEnumerator ResetPlayer()
+    {
+        resetting = true;
+        GetComponent<Renderer>().material.color = Color.black;
+        rb.velocity = Vector3.zero;
+        Vector3 startPos = transform.position;
+        float resetSpeed = 2f;
+        var i = 0.0f;
+        var rate = 1.0f / resetSpeed;
+        while (i < 1.0f)
+        {
+            i += Time.deltaTime * rate;
+            transform.position = Vector3.Lerp(startPos, resetPoint.transform.position, i);
+            yield return null;
+        }
+        GetComponent<Renderer>().material.color = originalColour;
+        resetting = false;
+    }
+}
