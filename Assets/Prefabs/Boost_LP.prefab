@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2081978265522796313}
   m_Layer: 0
   m_Name: Boost_LP
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 2d4454ce6a1d6804f9b1dc33c937a0f5, type: 3}
+  - {fileID: 2100000, guid: f0ce5eda316989b42aab17c34ffc6a74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

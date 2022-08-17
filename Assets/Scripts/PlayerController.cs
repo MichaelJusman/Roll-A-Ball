@@ -30,6 +30,11 @@ public class PlayerController : MonoBehaviour
     Color originalColour;
     bool grounded = true;
 
+    //Controllers
+    GameController gameController;
+    Timer timer;
+
+
     void Start()
     {
         //Turn off our win panel object
@@ -54,6 +59,13 @@ public class PlayerController : MonoBehaviour
 
         //Pause function
         Time.timeScale = 1;
+
+        //Timer & Game controller
+        gameController = FindObjectOfType<GameController>();
+        timer = FindObjectOfType<Timer>();
+        if (gameController.gameType == GameType.SpeedRun)
+            StartCoroutine(timer.StartCountdown());
+
     }
 
     void FixedUpdate()
@@ -79,6 +91,10 @@ public class PlayerController : MonoBehaviour
 
             //Add force to our rigidbody from our movement vector times our speed
             rb.AddForce(movement * speed);
+
+            //Tomer & Game controller
+            if (gameController.gameType == GameType.SpeedRun && !timer.IsTiming())
+                return;
         }
     }
 
