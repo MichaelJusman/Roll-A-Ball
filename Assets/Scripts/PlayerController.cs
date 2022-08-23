@@ -70,6 +70,10 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        //Tomer & Game controller
+        if (gameController.gameType == GameType.SpeedRun && !timer.IsTiming())
+            return;
+
         //If we have won the game, return from the function
         if (wonGame == true)
             return;
@@ -77,6 +81,7 @@ public class PlayerController : MonoBehaviour
         //Reset Function
         if (resetting)
             return;
+
 
         //Boost, Only able to move when grounded is true
         if (grounded)
@@ -92,9 +97,7 @@ public class PlayerController : MonoBehaviour
             //Add force to our rigidbody from our movement vector times our speed
             rb.AddForce(movement * speed);
 
-            //Tomer & Game controller
-            if (gameController.gameType == GameType.SpeedRun && !timer.IsTiming())
-                return;
+           
         }
     }
 
@@ -144,6 +147,9 @@ public class PlayerController : MonoBehaviour
             //Set the velocity of the rigidbody to zero
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+            if (gameController.gameType == GameType.SpeedRun)
+                timer.StopTimer();
+
         }
     }
 
